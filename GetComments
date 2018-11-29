@@ -1,0 +1,5 @@
+#!/bin/bash
+. /N1.sinarobot
+#获取微博id
+BlogId="xxxxxxxxx"
+comment $BlogId
