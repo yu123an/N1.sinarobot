@@ -1,3 +1,32 @@
 #!/bin/bash
 #import file
 . /N1.sinarobot/GetToken
+#发表一条新微博，默认不带图
+#如需带图，取消注释即可
+function newblog()
+{
+bobo=$1
+ppic=$2
+curl 'https://api.weibo.com/2/statuses/share.json' \
+-F "access_token=${token}" \
+#-F "pic=@${ppic};type=image/jpeg" \
+-F "status=${bobo}https://link.zhihu.com/?target=https://chwhsen.xyz" | jq '.'
+}
+#从评论读取指令
+function comment()
+{
+blog_id=$1
+action=$(curl "https://api.weibo.com/2/comments/show.json?access_token=${token}&id=${blog_id}" | jq -r '.comments[0].text')
+if [ $action = "null" ];then
+echo "Nothing"
+else
+id1=$(curl 'https://api.weibo.com/2/comments/show.json?access_token=${token}&id=${blog_id}' | jq -r '.comments[0].id')
+id2=${id1:0:16}
+curl 'https://api.weibo.com/2/comments/destroy.json' \
+-d "access_token=${token}&cid=$id2" > /dev/null
+echo $action > /N1.sinarobot/Action
+chmod 755 /N1.sinarobot/Action
+/N1.sinarobot/Action
+echo "I found something"
+fi
+}
