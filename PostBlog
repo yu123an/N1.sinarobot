@@ -1,0 +1,3 @@
+#!/bin/bash
+#import file
+. /N1.sinarobot/GetToken
