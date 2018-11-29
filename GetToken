@@ -1,0 +1,19 @@
+#!/bin/bash
+#App key
+App_Key="2261356123"
+#Secret key
+App_Secret="e0c7dffa49ddc32fab306d1e9a731d35"
+#安全域名
+url="http://www.ip111.cn"
+#回调页面
+back_page="https://api.weibo.com/oauth2/default.html"
+#
+#Get the code
+codee=$(curl \
+-LI 'https://api.weibo.com/oauth2/authorize?redirect_uri=https%3A%2F%2Fapi.weibo.com/oauth2/default.html&response_type=code&client_id=${App_Key}' \
+-H 'Cookie: SINAGLOBAL=8888888888889.8888.8888888888888; _ga=GA1.2.8888888888.8888888888; Hm_lvt_88f88881c8888a88f88d0d884df88fa4=8888888888; wvr=6; un=88888888885; login_sid_t=b4efac5e0eecd88880bb888888a8888b; cross_origin_proto=SSL; _s_tentry=login.sina.com.cn; UOR=www.axxxxxxan.com,widget.weibo.com,wwxxxxxxe.com.hk; Apache=8888888888880.8888.8888888888883; ULV=8888888888882:88:88:88:8888888888880.8888.8888888888883:8888888888888; SUBP=8888WrSXqPxfM885Ws9jqgMF88889P9D9WhfYXJ3fUg1NJy5SSnxxxxxpX5K2hUgL.Fo-cehq4ehBX1h.xxxxxxxxUhIGUQMcHV; ALF=8888888888; SSOLoginState=8888888888; SCF=Ai1a8cAJxxxxx2tfJrTxxxqmi2W5QfVzBUIhI3aUxxxxxxKP2L4Zy5_MLYxxxxxxjvJ4xxxxxxHMZZ-xULspQxg.; SUB=_2A882-wEvDeRhxxxxxxxxxxxxxxxxrIwzWIHXVScxxxxxxxxxxxxxxNbmtAKLxxxxxxxxxxxxxLl88wwIkh88HEpHbHAjxxxxxxxxxBR_H2; SUHB=0TPVjWcHcnBuM3' | grep Location | sed 's/.*=//g')
+tpt=${codee:0:32}
+# Get the token
+token=$(curl 'https://api.weibo.com/oauth2/access_token' \
+-d "client_id=${App_Key}&client_secret=${App_Secret}&grant_type=authorization_code&code=$tpt&redirect_uri=${back_page}" | jq -r '.access_token')
+echo "this is token : $token"
