@@ -1,0 +1,3 @@
+#!/bin/bash
+. /N1.AllFunction
+newblog $meaage $picture
